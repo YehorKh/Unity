@@ -63,6 +63,7 @@
     <Compile Include="Assets\MouseMove.cs" />
     <Compile Include="Assets\ReactiveTarget.cs" />
     <Compile Include="Assets\RayShooter.cs" />
+    <Compile Include="Assets\SceneContoller.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

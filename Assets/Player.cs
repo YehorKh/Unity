@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float _speedWalk;
     [SerializeField] private float _gravity;
+    [SerializeField] private float _jumpPower;
 
     private CharacterController _characterController;
     private Vector3 _walkDirection;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        Jump(Input.GetKey(KeyCode.Space) && _characterController.isGrounded);
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         _walkDirection = transform.right * x + transform.forward * z;
@@ -42,6 +44,12 @@ public class Player : MonoBehaviour
             _velocity.y = -1f;
         _velocity.y -= _gravity * Time.fixedDeltaTime;
         _characterController.Move(_velocity * Time.fixedDeltaTime);
+    }
+
+    private void Jump(bool canJump)
+    {
+        if (canJump)
+            _velocity.y = _jumpPower;
     }
 
 }

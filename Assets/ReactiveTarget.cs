@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ReactiveTarget : MonoBehaviour
 {
+    [SerializeField] private float speed = 3.0F;
+   [SerializeField] private float obstractRange = 5.0F;
     public Vector3 size;
     private MeshRenderer renderer;
     // Start is called before the first frame update
@@ -20,8 +22,21 @@ public class ReactiveTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
+        if (dead == false)
+        {
+            transform.Translate(0, 0, speed * Time.deltaTime);
+
+            RaycastHit hit;
+            Ray ray = new Ray(transform.position, transform.forward);
+            if (Physics.SphereCast(ray, 0.75F, out hit))
+            {
+                if(hit.distance < obstractRange)
+                {
+                    transform.Rotate(0, Random.Range(-110, 110), 0);
+                }
+            }
+        }
+    } 
 
 
     public void ReactToHit()
@@ -30,10 +45,18 @@ public class ReactiveTarget : MonoBehaviour
         if (hp == 0 && dead == false)
         {
             dead = true;
+            
+
             StartCoroutine(Die());
+            DestroyObject();
         }
-        Debug.Log("Target Hit + " + hp);
         
+    }
+    private void DestroyObject()
+    {
+        Destroy(gameObject, 3);
+        
+
     }
     private IEnumerator Die()
     {
