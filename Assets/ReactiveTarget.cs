@@ -8,11 +8,16 @@ public class ReactiveTarget : MonoBehaviour
    [SerializeField] private float obstractRange = 5.0F;
     public Vector3 size;
     private MeshRenderer renderer;
-    // Start is called before the first frame update
+     GameObject gm;
+    private SceneContoller _actionTarget;
+
     private int hp;
     private bool dead;
     void Start()
     {
+        //_actionTarget = gm.GetComponent<SceneContoller>();
+        gm = GameObject.Find("/Controller");
+        _actionTarget = gm.GetComponent<SceneContoller>();
         renderer = GetComponent<MeshRenderer>();
         size = renderer.bounds.size;
         dead = false;
@@ -38,15 +43,17 @@ public class ReactiveTarget : MonoBehaviour
         }
     } 
 
+    public void Shoot()
+    {
 
+    }
     public void ReactToHit()
     {
         hp--;
         if (hp == 0 && dead == false)
         {
             dead = true;
-            
-
+            _actionTarget.EnemyKilled();
             StartCoroutine(Die());
             DestroyObject();
         }
@@ -63,7 +70,6 @@ public class ReactiveTarget : MonoBehaviour
       
         this.transform.position = transform.position + new Vector3(0, -size.y/2, 0);
 
-        this.transform.Rotate(-90,0,0);
         yield return new WaitForSeconds(2.0F);
     }
 }

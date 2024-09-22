@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speedWalk;
     [SerializeField] private float _gravity;
     [SerializeField] private float _jumpPower;
-
+    [SerializeField] private Animator animator;
     private CharacterController _characterController;
     private Vector3 _walkDirection;
     private Vector3 _velocity;
@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     {
         _speed = _speedWalk;
         _characterController = GetComponent<CharacterController>();
+        //animator.enabled = false;
     }
 
     private void Update()

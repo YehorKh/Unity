@@ -62,8 +62,13 @@
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\MouseMove.cs" />
     <Compile Include="Assets\ReactiveTarget.cs" />
+    <Compile Include="Assets\AnimationNinja.cs" />
+    <Compile Include="Assets\Phoenix3D\Demo\Scripts\MaterialSwithcer.cs" />
     <Compile Include="Assets\RayShooter.cs" />
     <Compile Include="Assets\SceneContoller.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\SkySeries Freebie\Hdri setup.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

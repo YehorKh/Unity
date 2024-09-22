@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,8 @@ public class RayShooter : MonoBehaviour
     private Camera camera;
     [SerializeField]
     private GUIStyle guiStyle;
-
+    public GameObject bulletPrefab; // Префаб пули
+    public float bulletSpeed = 1000f;
     void Start()
     {
         camera = GetComponent<Camera>();
@@ -26,17 +27,21 @@ public class RayShooter : MonoBehaviour
 
             Ray ray = camera.ScreenPointToRay(center);
             RaycastHit hit;
-            if(Physics.Raycast(ray, out hit))
+            StartCoroutine(ShootBullet(ray));
+            if (Physics.Raycast(ray, out hit))
             {
-                //StartCoroutine(CreateSphereIndicator(hit.point));
-
 
                 GameObject hitObject = hit.transform.gameObject;
 
                 ReactiveTarget target = hitObject.GetComponent<ReactiveTarget>();
-                if(target)
+                AnimationNinja targetNinja = hitObject.GetComponent<AnimationNinja>();
+                if (target)
                 {
                     target.ReactToHit();
+                }
+                if(targetNinja)
+                {
+                    targetNinja.Die();
                 }
             }
         }
@@ -48,12 +53,25 @@ public class RayShooter : MonoBehaviour
         yield return new WaitForSeconds(1);
         Destroy(sphere);
     }
+    private IEnumerator ShootBullet(Ray ray)
+    {
+        GameObject bullet = Instantiate(bulletPrefab, ray.origin, Quaternion.identity);
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.velocity = ray.direction * bulletSpeed;
+        }
+
+        yield return new WaitForSeconds(2);
+        Destroy(bullet);
+    }
     private void OnGUI()
     {
-        float size = guiStyle.fontSize;
-        float x = camera.pixelWidth / 2.0F-size/2.0F;
-        float y = camera.pixelHeight / 2.0F - size / 2.0F;
-        GUI.Label(new Rect(x, y, size, size), "+",guiStyle);
+        int n = 12;
+        float xxx = camera.pixelWidth / 2 - n / 2;
+        float yyy = camera.pixelHeight / 2 - n / 2;
+        GUI.Label(new Rect(xxx, yyy, n, n), "+");
 
 
     }
