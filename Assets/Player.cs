@@ -1,23 +1,28 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private GUIStyle guiStyle;
     [SerializeField] private float _speedWalk;
     [SerializeField] private float _gravity;
     [SerializeField] private float _jumpPower;
     [SerializeField] private Animator animator;
+    [SerializeField] private Camera camera;
     private CharacterController _characterController;
     private Vector3 _walkDirection;
     private Vector3 _velocity;
     private float _speed;
-
+    private int hp = 3;
+    GameObject gm;
+    private GameOver _actionTarget;
     private void Start()
     {
         _speed = _speedWalk;
         _characterController = GetComponent<CharacterController>();
-        //animator.enabled = false;
+        gm = GameObject.Find("/Controller");
+        _actionTarget = gm.GetComponent<GameOver>();
     }
 
     private void Update()
@@ -27,7 +32,16 @@ public class Player : MonoBehaviour
         float z = Input.GetAxis("Vertical");
         _walkDirection = transform.right * x + transform.forward * z;
     }
+    public void ReactToHit()
+    {
+        
+        hp--;
+        if (hp <= 0)
+        {
+            _actionTarget.EndGame();
+        }
 
+    }
     private void FixedUpdate()
     {
         Walk(_walkDirection);
@@ -52,5 +66,15 @@ public class Player : MonoBehaviour
         if (canJump)
             _velocity.y = _jumpPower;
     }
+    private void OnGUI()
+    {
+        int n = 128;
+        float xxx = camera.pixelWidth / 2;
+        float yyy = 5.0F;
+        GUI.Label(new Rect(xxx, yyy, n, n), hp.ToString() + "♥", guiStyle);
 
+
+
+    }
+    
 }

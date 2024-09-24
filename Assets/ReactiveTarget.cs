@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,10 @@ public class ReactiveTarget : MonoBehaviour
 
     private int hp;
     private bool dead;
+
+    private float bulletTime = 1.0f;
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 10f;
     void Start()
     {
         //_actionTarget = gm.GetComponent<SceneContoller>();
@@ -32,20 +36,45 @@ public class ReactiveTarget : MonoBehaviour
             transform.Translate(0, 0, speed * Time.deltaTime);
 
             RaycastHit hit;
-            Ray ray = new Ray(transform.position, transform.forward);
+            float distance = 1.0f; 
+            float heightOffset = 3.0f; 
+
+            Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y + heightOffset, transform.position.z) + transform.forward * distance, transform.forward);
             if (Physics.SphereCast(ray, 0.75F, out hit))
             {
-                if(hit.distance < obstractRange)
+                GameObject hitObject = hit.transform.gameObject;
+                Player player = hitObject.GetComponent<Player>();
+                bulletTime -= Time.deltaTime;
+                if (player && bulletTime <= 0)
                 {
-                    transform.Rotate(0, Random.Range(-110, 110), 0);
+                    StartCoroutine(ShootBullet(ray));
+                    bulletTime = 1.0f;
                 }
+                else
+                {       
+                    if (hit.distance < obstractRange)
+                    {
+                        transform.Rotate(0, Random.Range(-110, 110), 0);
+                    }
+                }
+                
+                
             }
         }
-    } 
+    }
 
-    public void Shoot()
+    private IEnumerator ShootBullet(Ray ray)
     {
+        GameObject bullet = Instantiate(bulletPrefab, ray.origin, Quaternion.identity);
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
+        if (rb != null)
+        {
+            rb.velocity = ray.direction * bulletSpeed;
+        }
+
+        yield return new WaitForSeconds(0.6F);
+        Destroy(bullet);
     }
     public void ReactToHit()
     {

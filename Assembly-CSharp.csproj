@@ -64,8 +64,10 @@
     <Compile Include="Assets\ReactiveTarget.cs" />
     <Compile Include="Assets\AnimationNinja.cs" />
     <Compile Include="Assets\Phoenix3D\Demo\Scripts\MaterialSwithcer.cs" />
+    <Compile Include="Assets\EnemyBullet.cs" />
     <Compile Include="Assets\RayShooter.cs" />
     <Compile Include="Assets\SceneContoller.cs" />
+    <Compile Include="Assets\GameOver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\SkySeries Freebie\Hdri setup.txt" />

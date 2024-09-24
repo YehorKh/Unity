@@ -7,14 +7,13 @@ public class SceneContoller : MonoBehaviour
     [SerializeField]GameObject target;
     int score = 0;
     int hp;
-    private GameObject[] targets = new GameObject[7];
+    private GameObject[] targets = new GameObject[17];
     void Start()
     {
 
     }
     public void EnemyKilled()
     {
-        Debug.Log("Hello: " + score);
         score += 100;
     }
     private void OnGUI()

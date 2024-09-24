@@ -9,7 +9,7 @@ public class RayShooter : MonoBehaviour
     private Camera camera;
     [SerializeField]
     private GUIStyle guiStyle;
-    public GameObject bulletPrefab; // Префаб пули
+    public GameObject bulletPrefab; 
     public float bulletSpeed = 1000f;
     void Start()
     {
